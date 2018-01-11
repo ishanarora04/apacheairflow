@@ -1,2 +1,6 @@
 logs
+env
 venv
+*.pyc
+*.csv
+.idea

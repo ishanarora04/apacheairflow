@@ -2,14 +2,13 @@ from datetime import datetime
 from airflow import DAG
 from airflow.operators import MySQLToCSVOperator
 from airflow.operators.dummy_operator import DummyOperator;
-from airflow import configuration;
-
+from airflow import configuration
 args = {
     'owner': 'scopeworker',
-    'provide_context': True,
+    'provide_context': True
 }
 
-dag = DAG('mysql_to_csv_dag', description='Another tutorial DAG',
+dag = DAG('mysql_to_csv_dag_2', description='Another tutorial DAG',
           schedule_interval="*/1 * * * *",
           start_date=datetime(2017, 3, 20), catchup=False,
           default_args=args);
@@ -26,3 +25,6 @@ mysql_csv_operator =  MySQLToCSVOperator(task_id="mysql_to_csv_task",
                                     dag=dag);
 
 dummy_task >> mysql_csv_operator >> complete;
+
+
+

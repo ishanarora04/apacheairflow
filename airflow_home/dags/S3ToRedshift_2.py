@@ -1,17 +1,17 @@
 
-
+from airflow import configuration
 from datetime import datetime
 from airflow import DAG
 from airflow.operators import S3ToRedshiftOperator
 from airflow.operators.dummy_operator import DummyOperator;
-from airflow import configuration;
+
 
 args = {
     'owner': 'scopeworker',
     'provide_context': True
 }
 
-dag = DAG('s3_to_redshift_dag', description='REDSHIFT DAG',
+dag = DAG('s3_to_redshift_dag_2', description='REDSHIFT DAG',
           schedule_interval='*/1 * * * *',
           start_date=datetime(2017, 3, 20),
           catchup=False,

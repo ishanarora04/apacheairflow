@@ -7,6 +7,7 @@ from airflow.utils.decorators import apply_defaults
 from airflow.hooks.postgres_hook import PostgresHook
 from airflow.exceptions import AirflowException
 from airflow.hooks.S3_hook import  S3Hook;
+
 log = logging.getLogger(__name__)
 
 class S3ToRedshiftOperator(BaseOperator):
@@ -87,37 +88,38 @@ class S3ToRedshiftOperator(BaseOperator):
         return False;
 
     def _upload_data_to_staging(self, cursor):
-        try:
-            load_statement = """
-                    delete from {0};
-                    copy
-                    {0}
-                    from 's3://{1}/{2}'
-                    access_key_id '{3}' secret_access_key '{4}'
-                    delimiter '{5}' region '{6}' IGNOREHEADER 1 """.format(
-                    self.src_table, self.s3_bucket, self.s3_path,
-                    self.s3_access_key_id, self.s3_secret_access_key,
-                    self.delimiter, self.region);
-            cursor.execute(load_statement)
-            print(load_statement);
-            cursor.close()
-            log.info("Load command completed");
-        except :
-            raise AirflowException("Data Upload Error");
+
+
+        load_statement = """
+                        delete from {0};
+                        copy
+                        {0}
+                        from 's3://{1}/{2}'
+                        access_key_id '{3}' secret_access_key '{4}'
+                        delimiter '{5}' region '{6}' DATEFORMAT 'auto' TIMEFORMAT 'auto' EMPTYASNULL BLANKSASNULL FILLRECORD IGNOREHEADER                         1 """.format(
+                        self.src_table, self.s3_bucket, self.s3_path,
+                        self.s3_access_key_id, self.s3_secret_access_key,
+                        self.delimiter, self.region);
+        log.info("The Load statement is {}".format(load_statement));
+        cursor.execute(load_statement)
+        log.info("The Load statement is executed");
+        cursor.close()
+        log.info("Load command completed");
+
         return True;
 
     def _upsertData(self, cursor):
 
         # build the SQL statement
         sql_statement = "begin transaction; "
-        sql_statement += "delete from " + self.dest_table + " using " + self.src_table + " where "
+        sql_statement += "delete from "  + self.dest_table + " using " + self.src_table + " where "
         for i in range(0, len(self.src_keys)):
-            sql_statement += self.src_table + "." + self.src_keys[i] + " = " + self.dest_table + "." + self.dest_keys[i]
+            sql_statement +=  self.src_table + "." + self.src_keys[i] + " = " +  self.dest_table + "." + self.dest_keys[i]
             if (i < len(self.src_keys) - 1):
                 sql_statement += " and "
 
         sql_statement += "; "
-        sql_statement += " insert into " + self.dest_table + " select * from " + self.src_table + " ; "
+        sql_statement += " insert into "  + self.dest_table + " select * from " +  self.src_table + " ; "
         sql_statement += " end transaction; "
         cursor.execute(sql_statement)
         cursor.close()
