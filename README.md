@@ -10,7 +10,7 @@ The scripts is tested for only Python 2.7
 
 > Step 1: Clone the repo
 
->> git clone https://git.clicklabs.in/scopeworker/v2-scopeworker-backend.git
+>> git clone https://git.clicklabs.in/ClickLabs/RedshiftScopeWorkerScripts.git
 
 > Step 2: Virtual Environment
 
