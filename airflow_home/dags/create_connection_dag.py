@@ -60,6 +60,14 @@ def auto_conn():
                      "login": configuration.get('postgresql', 'postgresql_login'),
                      "password": configuration.get('postgresql', 'postgresql_password')})
 
+    create_new_conn(session,
+                    {"conn_id": "airflow_connection",
+                     "conn_type": configuration.get('mysql', 'mysql_conn_type'),
+                     "schema": "airflow",
+                     "host": "localhost",
+                     "login": "airflow",
+                     "password": "airflow"})
+
     session.close()
 
 dag = airflow.DAG(

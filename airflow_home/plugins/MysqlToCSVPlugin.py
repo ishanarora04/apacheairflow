@@ -35,7 +35,7 @@ class MySQLToCSVOperator(BaseOperator):
 
     def execute(self, context):
         self.mysql_hook = MySqlHook(self.mysql_conn_id);
-        self.mysql_metadata_hook = MySqlHook("airflow_db");
+        self.mysql_metadata_hook = MySqlHook("airflow_connection");
         self.table_name = self.fetch_table_name();
 
         if self.table_name is None:
@@ -53,11 +53,10 @@ class MySQLToCSVOperator(BaseOperator):
 
         fetch_columns_redshift , count_field_redshift = self._fetch_field_names_table(table_name);
 
-        if count_field_redshift == 0:
-            # Creating table in Staging
-            redshift_statement_staging, redshift_statement_main = self._create_table_statement(cursor , table_name);
-            self._redshift_staging_table(redshift_sql=redshift_statement_staging);
-            self._redshift_staging_table(redshift_sql=redshift_statement_main);
+        # Creating table in Staging
+        redshift_statement_staging, redshift_statement_main = self._create_table_statement(cursor , table_name);
+        self._redshift_staging_table(redshift_sql=redshift_statement_staging);
+        self._redshift_staging_table(redshift_sql=redshift_statement_main);
 
         #Alter table Statement
         if count_field_redshift > 0 and  count_field_redshift != len(cursor.description):

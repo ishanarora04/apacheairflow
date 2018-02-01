@@ -13,7 +13,7 @@ class MysqlMetadataOperator(BaseOperator):
         super(MysqlMetadataOperator, self).__init__(*args, **kwargs)
 
     def execute(self, context):
-        self.mysql_metadata_hook = MySqlHook("airflow_db");
+        self.mysql_metadata_hook = MySqlHook("airflow_connection");
         self.mysql_table_hook = MySqlHook(self.mysql_conn_id);
         self.insert_tables();
         return True;
