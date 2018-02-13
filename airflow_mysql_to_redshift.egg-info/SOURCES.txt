@@ -1,0 +1,7 @@
+README.md
+setup.py
+airflow_mysql_to_redshift.egg-info/PKG-INFO
+airflow_mysql_to_redshift.egg-info/SOURCES.txt
+airflow_mysql_to_redshift.egg-info/dependency_links.txt
+airflow_mysql_to_redshift.egg-info/requires.txt
+airflow_mysql_to_redshift.egg-info/top_level.txt

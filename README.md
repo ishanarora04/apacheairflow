@@ -38,12 +38,12 @@ The scripts is tested for only Python 2.7
 >>  airflow initdb
 
 
-> Step 7 : Start server
->>  airflow webserver -p 8080
+> Step 7 : Start server as a Daemon
+>>  airflow webserver -D
 
-> Step 8 : Start Scheduler
+> Step 8 : Start Scheduler as a Daemon
 
->> airflow scheduler
+>> airflow scheduler -D
 
 
 

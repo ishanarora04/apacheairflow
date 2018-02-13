@@ -55,8 +55,7 @@ class MySQLToCSVOperator(BaseOperator):
 
         # Creating table in Staging
         redshift_statement_staging, redshift_statement_main = self._create_table_statement(cursor , table_name);
-        self._redshift_staging_table(redshift_sql=redshift_statement_staging);
-        self._redshift_staging_table(redshift_sql=redshift_statement_main);
+        self._redshift_staging_table(redshift_sql=redshift_statement_main + ";" + redshift_statement_staging);
 
         #Alter table Statement
         if count_field_redshift > 0 and  count_field_redshift != len(cursor.description):
@@ -67,9 +66,8 @@ class MySQLToCSVOperator(BaseOperator):
             for elem in cursor.description:
                 if elem[0] in difference:
                     alter_fields.append(elem);
-            alter_table_statement_main, alter_table_statement_staging = self._alter_table(table_name, alter_fields);
-            self._redshift_staging_table(alter_table_statement_main);
-            self._redshift_staging_table(alter_table_statement_staging);
+            redshift_alter_table_commands = self._alter_table(table_name, alter_fields);
+            self._redshift_staging_table(";".join(redshift_alter_table_commands));
 
         self._upload_files(files_to_upload);
         cursor.close();
@@ -83,11 +81,9 @@ class MySQLToCSVOperator(BaseOperator):
         redshift_sql_staging = "alter table " + " " + table_name + "_staging" + " add column ";
         redshift_alter_fields = [];
         for mysql_fields in alter_fields:
-            redshift_alter_fields.append((mysql_fields[0]) + " " + self.type_map(mysql_fields[1]));
-        redshift_sql_main += ", ".join(redshift_alter_fields);
-        redshift_sql_staging += " , ".join(redshift_alter_fields);
-
-        return redshift_sql_main , redshift_sql_staging;
+            redshift_alter_fields.append((redshift_sql_main + mysql_fields[0]) + " " + self.type_map(mysql_fields[1]));
+            redshift_alter_fields.append((redshift_sql_staging + mysql_fields[0]) + " " + self.type_map(mysql_fields[1]));
+        return redshift_alter_fields ;
 
 
     def fetch_table_name(self):
