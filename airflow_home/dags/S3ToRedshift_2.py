@@ -24,7 +24,7 @@ redshift_operator = S3ToRedshiftOperator(task_id="s3_to_redshift",
                                          aws_conn_id=configuration.get("s3", "s3_conn_id"),
                                          s3_access_key_id = configuration.get("s3", "s3_access_key_id"),
                                          s3_secret_access_key = configuration.get("s3", "s3_secret_access_key"),
-                                         delimiter = '\t',
+                                         delimiter = '|',
                                          region = "us-east-1",
                                          dag=dag);
 

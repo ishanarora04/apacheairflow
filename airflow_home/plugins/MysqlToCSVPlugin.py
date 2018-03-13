@@ -11,6 +11,7 @@ from airflow.exceptions import AirflowException
 from airflow.hooks.S3_hook import S3Hook
 from MySQLdb.constants import FIELD_TYPE
 from airflow.hooks.postgres_hook import PostgresHook
+import codecs
 
 log = logging.getLogger(__name__)
 
@@ -127,7 +128,15 @@ class MySQLToCSVOperator(BaseOperator):
 
         df = pd.read_sql_query(mysql_query, self.mysql_hook.get_conn());
         df = df.replace('\n', '', regex=True)
-        df.to_csv(path_or_buf=csv.name, sep = '\t', encoding='utf-8', index=False);
+        total_rows = len(df);
+        event_row_data = ['writerows'] * total_rows;
+        data = pd.Series(event_row_data);
+        df.insert(loc=0, column='event', value=data);
+
+        for column in df.select_dtypes([np.object]).columns[1:]:
+            df[column] = df[column].str.replace(r"[\"\',]", '')
+
+        df.to_csv(path_or_buf=csv.name, sep = '|', index=False);
         return csv
 
 
@@ -137,10 +146,11 @@ class MySQLToCSVOperator(BaseOperator):
             Takes a cursor and iterates over it .
             Prints the cursor data
         """
+
         primary_key = cursor.description[cursor.lastrowid][0];
         file_key = "m&{0}&{1}.csv".format(table_name, primary_key);
-        file_handle = open(file_key, 'w')
-        file_handle = self._create_csv_file(mysql_query="select * from " + table_name, csv = file_handle);
+        file_handle = codecs.open(file_key, 'w' , errors='ignore', encoding='utf-8')
+        file_handle = self._create_csv_file(mysql_query="select * from " + table_name , csv = file_handle);
         return {file_key : file_handle};
 
     def _write_local_file_schema(self, cursor):
@@ -181,17 +191,38 @@ class MySQLToCSVOperator(BaseOperator):
 
         redshift_statement = "CREATE TABLE IF NOT EXISTS " ;
 
-        redshift_fields = [];
+        redshift_fields = ["event varchar(20)"];
         primary_key = (cursor.description[cursor.lastrowid]);
 
         #TODO : $ field in Mongo Tables
 
+        diststyle_key_validate = False
+        diststyle_keys = "";
+
+        sort_key = [primary_key[0]];
+
         for mysql_fields in cursor.description:
+            if mysql_fields[0] == 'company_id' or mysql_fields[0] == 'vendor_id':
+                diststyle_key_validate = True;
+                diststyle_keys = mysql_fields[0];
+                sort_key.append(mysql_fields[0]);
+
             redshift_fields.append((mysql_fields[0]) + " " + self.type_map(mysql_fields[1]));
+
         redshift_fields.append("PRIMARY KEY({0})".format(primary_key[0]));
         redshift_fields = ",".join(redshift_fields);
-        redshift_statement_staging = redshift_statement  + "" + table_name + "_staging (" + redshift_fields + ")";
-        redshift_statement_main = redshift_statement  + "" + table_name  + "(" +  redshift_fields + ")"
+        redshift_statement_staging = redshift_statement + "" + table_name + "_staging (" + redshift_fields + ")";
+        redshift_statement_main = redshift_statement + "" + table_name + "(" + redshift_fields + ")"
+
+        redshift_statement_staging += " DISTSTYLE ALL " if not diststyle_key_validate \
+            else "DISTKEY({0})".format(diststyle_keys);
+        redshift_statement_main += " DISTSTYLE ALL " if not diststyle_key_validate \
+            else "DISTKEY({0})".format(diststyle_keys);
+
+        redshift_statement_main += "SORTKEY ({0})".format(",".join(sort_key));
+        redshift_statement_staging += "SORTKEY ({0})".format(",".join(sort_key));
+
+        logging.info(redshift_statement_main);
 
         return redshift_statement_staging ,redshift_statement_main;
 
@@ -235,7 +266,7 @@ class MySQLToCSVOperator(BaseOperator):
                 FIELD_TYPE.DATE: 'DATE',
                 FIELD_TYPE.DECIMAL: 'FLOAT',
                 FIELD_TYPE.NEWDECIMAL: 'FLOAT',
-                FIELD_TYPE.DOUBLE: 'FLOAT',
+                FIELD_TYPE.DOUBLE: 'VARCHAR(200)',
                 FIELD_TYPE.FLOAT: 'FLOAT',
                 FIELD_TYPE.LONG: 'DECIMAL',
                 FIELD_TYPE.LONGLONG: 'DECIMAL',

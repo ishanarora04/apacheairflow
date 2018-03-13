@@ -96,7 +96,7 @@ class S3ToRedshiftOperator(BaseOperator):
                         {0}
                         from 's3://{1}/{2}'
                         access_key_id '{3}' secret_access_key '{4}'
-                        delimiter '{5}' region '{6}' DATEFORMAT 'auto' TIMEFORMAT 'auto' EMPTYASNULL BLANKSASNULL FILLRECORD IGNOREHEADER                         1 """.format(
+                        delimiter '{5}' region '{6}' DATEFORMAT 'auto' TIMEFORMAT 'auto' EMPTYASNULL BLANKSASNULL FILLRECORD IGNOREHEADER 1 """.format(
                         self.src_table, self.s3_bucket, self.s3_path,
                         self.s3_access_key_id, self.s3_secret_access_key,
                         self.delimiter, self.region);
