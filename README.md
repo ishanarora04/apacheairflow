@@ -45,21 +45,22 @@ The scripts is tested for only Python 2.7
 >> `pip install apache-airflow[s3]`
 >> `pip install apache-airflow[postgres]`
 
-> Step 5: Update airflow.cfg and mention the required connection variables
-
-> Step 6: Initialize the airflow meta database
-
+> Step 5: Initialize the airflow meta database
 >>  airflow initdb
+
+> Step 6: Copy airflow.cfg from the pseudo folder and replace the current one
 
 > Step 7 : Copy the dags and plugin from the pseudo folder to Airflow_home:
 
 >> `cp -r pseudo/dags airflow_home/dags`
 >> `cp -r pseudo/plugins airflow_home/plugins`
 
-> Step 7 : Start server as a Daemon
+>> Step 8 : Change the S3 bucket names and S3 bucket region in all the dags to point to bucket where your intermediate steps will be done.
+
+> Step 9 : Start server as a Daemon
 >>  `airflow webserver -D`
 
-> Step 8 : Start Scheduler as a Daemon
+> Step 10 : Start Scheduler as a Daemon
 
 >> `airflow scheduler -D`
 
