@@ -30,7 +30,7 @@ The scripts is tested for only Python 2.7
 
 >> `mkdir pseudo`
 >> `cd pseudo`
->> `git clone https://git.clicklabs.in/ClickLabs/RedshiftScopeWorkerScripts.git`
+>> `git clone https://git.clicklabs.in/kato/redshiftEtlLayer.git`
 >> `cd ..`
 
 
