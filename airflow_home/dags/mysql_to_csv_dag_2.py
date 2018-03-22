@@ -25,6 +25,3 @@ mysql_csv_operator =  MySQLToCSVOperator(task_id="mysql_to_csv_task",
                                     dag=dag);
 
 dummy_task >> mysql_csv_operator >> complete;
-
-
-

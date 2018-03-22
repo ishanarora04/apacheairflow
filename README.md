@@ -48,7 +48,7 @@ The scripts is tested for only Python 2.7
 > Step 5: Initialize the airflow meta database
 >>  airflow initdb
 
-> Step 6: Copy airflow.cfg from the pseudo folder and replace the current one
+> Step 6: Copy mysql, s3, postgress section of airflow.cfg from the pseudo folder and replace the current one
 
 > Step 7 : Copy the dags and plugin from the pseudo folder to Airflow_home:
 
