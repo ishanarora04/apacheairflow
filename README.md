@@ -52,8 +52,8 @@ The scripts is tested for only Python 2.7
 
 > Step 7 : Copy the dags and plugin from the pseudo folder to Airflow_home:
 
->> `cp -r pseudo/dags airflow_home/dags`
->> `cp -r pseudo/plugins airflow_home/plugins`
+>> `cp -r pseudo/redshiftEtlLayer/airflow_home/dags airflow_home/dags`
+>> `cp -r pseudo/redshiftEtlLayer/airflow_home/plugin airflow_home/plugins`
 
 >> Step 8 : Change the S3 bucket names and S3 bucket region in all the dags to point to bucket where your intermediate steps will be done.
 
