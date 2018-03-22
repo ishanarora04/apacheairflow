@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "/Users/ishanarora/PycharmProjects/RedshiftSampleETL/env/bin/airflow", line 27, in <module>
+    args.func(args)
+  File "/Users/ishanarora/PycharmProjects/RedshiftSampleETL/env/lib/python2.7/site-packages/airflow/bin/cli.py", line 782, in webserver
+    gunicorn_master_proc = psutil.Process(gunicorn_master_proc_pid)
+  File "/Users/ishanarora/PycharmProjects/RedshiftSampleETL/env/lib/python2.7/site-packages/psutil/__init__.py", line 364, in __init__
+    self._init(pid)
+  File "/Users/ishanarora/PycharmProjects/RedshiftSampleETL/env/lib/python2.7/site-packages/psutil/__init__.py", line 403, in _init
+    raise NoSuchProcess(pid, None, msg)
+psutil.NoSuchProcess: psutil.NoSuchProcess no process found with pid 17242

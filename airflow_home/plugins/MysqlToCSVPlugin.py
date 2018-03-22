@@ -199,13 +199,14 @@ class MySQLToCSVOperator(BaseOperator):
         diststyle_key_validate = False
         diststyle_keys = "";
 
-        sort_key = [primary_key[0]];
+        sort_key = {};
+        sort_key[primary_key[0]] = 1;
 
         for mysql_fields in cursor.description:
             if mysql_fields[0] == 'company_id' or mysql_fields[0] == 'vendor_id':
                 diststyle_key_validate = True;
                 diststyle_keys = mysql_fields[0];
-                sort_key.append(mysql_fields[0]);
+                sort_key[mysql_fields[0]] = 1;
 
             redshift_fields.append((mysql_fields[0]) + " " + self.type_map(mysql_fields[1]));
 
@@ -219,13 +220,12 @@ class MySQLToCSVOperator(BaseOperator):
         redshift_statement_main += " DISTSTYLE ALL " if not diststyle_key_validate \
             else "DISTKEY({0})".format(diststyle_keys);
 
-        redshift_statement_main += "SORTKEY ({0})".format(",".join(sort_key));
-        redshift_statement_staging += "SORTKEY ({0})".format(",".join(sort_key));
+        redshift_statement_main += "SORTKEY ({0})".format(",".join(sort_key.keys()));
+        redshift_statement_staging += "SORTKEY ({0})".format(",".join(sort_key.keys()));
 
         logging.info(redshift_statement_main);
 
         return redshift_statement_staging ,redshift_statement_main;
-
 
     def _redshift_staging_table(self, redshift_sql):
 

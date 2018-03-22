@@ -20,7 +20,7 @@ complete = DummyOperator(task_id='task_complete', dag=dag);
 mysql_csv_operator =  MySQLToCSVOperator(task_id="mysql_to_csv_task",
                                     mysql_conn_id= configuration.get("mysql", "mysql_conn_id"),
                                     aws_conn_id = configuration.get("s3", "s3_conn_id"),
-                                    s3_bucket = "scopeworkerkato",
+                                    s3_bucket = "scopeworkerproduction",
                                     redshift_connection_id=configuration.get("postgresql", "postgresql_conn_id"),
                                     dag=dag);
 

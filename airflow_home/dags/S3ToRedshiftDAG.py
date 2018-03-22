@@ -20,12 +20,12 @@ dag = DAG('s3_to_redshift_dag', description='REDSHIFT DAG',
 
 redshift_operator = S3ToRedshiftOperator(task_id="s3_to_redshift",
                                          redshift_conn_id=configuration.get("postgresql", "postgresql_conn_id"),
-                                         s3_bucket="scopeworkerkato",
+                                         s3_bucket="scopeworkerproduction",
                                          aws_conn_id=configuration.get("s3", "s3_conn_id"),
                                          s3_access_key_id = configuration.get("s3", "s3_access_key_id"),
                                          s3_secret_access_key = configuration.get("s3", "s3_secret_access_key"),
                                          delimiter = '|',
-                                         region = "us-east-1",
+                                         region = "us-west-2",
                                          dag=dag);
 
 dummy_operator = DummyOperator(task_id='dummy_task', retries=3, dag=dag);
