@@ -24,14 +24,14 @@ The scripts is tested for only Python 2.7
 
 >>Activate the virtual env with : `source env/bin/activate`
 
-> Step 3 : Create Directory : airflow_home
+> Step 3 : Create Directory : `airflow_home`
 
 > Step 4 : Clone the Repo:
 
->> mkdir pseudo
->> cd pseudo
->> git clone https://git.clicklabs.in/ClickLabs/RedshiftScopeWorkerScripts.git
->> cd ..
+>> `mkdir pseudo`
+>> `cd pseudo`
+>> `git clone https://git.clicklabs.in/ClickLabs/RedshiftScopeWorkerScripts.git`
+>> `cd ..`
 
 
 > Step 3 : Airflow HOME
@@ -53,18 +53,18 @@ The scripts is tested for only Python 2.7
 
 > Step 7 : Copy the dags and plugin from the pseudo folder to Airflow_home:
 
->> cp -r pseudo/dags airflow_home/dags
->> cp -r pseudo/plugins airflow_home/plugins
+>> `cp -r pseudo/dags airflow_home/dags`
+>> `cp -r pseudo/plugins airflow_home/plugins`
 
 > Step 7 : Start server as a Daemon
->>  airflow webserver -D
+>>  `airflow webserver -D`
 
 > Step 8 : Start Scheduler as a Daemon
 
->> airflow scheduler -D
+>> `airflow scheduler -D`
 
 
-
+> Step 9 : Ensure Create Connection dag is run first
 
 
 
