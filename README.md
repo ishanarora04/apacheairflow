@@ -44,11 +44,12 @@ The scripts is tested for only Python 2.7
 >> `pip install apache-airflow[mysql]`
 >> `pip install apache-airflow[s3]`
 >> `pip install apache-airflow[postgres]`
+>> `pip install boto3`
 
 > Step 5: Initialize the airflow meta database
 >>  airflow initdb
 
-> Step 6: Copy mysql, s3, postgress section of airflow.cfg from the pseudo folder and replace the current one
+> Step 6: Copy mysql, s3, postgress section of airflow.cfg from the pseudo folder into the current one
 
 > Step 7 : Copy the dags and plugin from the pseudo folder to Airflow_home:
 
@@ -64,12 +65,5 @@ The scripts is tested for only Python 2.7
 
 >> `airflow scheduler -D`
 
-
 > Step 9 : Ensure Create Connection dag is run first
-
-
-
-
-
-
 

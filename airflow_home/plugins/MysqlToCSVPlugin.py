@@ -59,7 +59,7 @@ class MySQLToCSVOperator(BaseOperator):
         self._redshift_staging_table(redshift_sql=redshift_statement_main + ";" + redshift_statement_staging);
 
         #Alter table Statement
-        if count_field_redshift > 0 and  count_field_redshift != len(cursor.description):
+        if count_field_redshift > 0 and  count_field_redshift - 1 != len(cursor.description):
             redshift_field = frozenset([field[0] for field in fetch_columns_redshift]);
             mysql_fields = frozenset(self._write_local_file_schema(cursor));
             difference = (mysql_fields.difference(redshift_field));
@@ -136,7 +136,7 @@ class MySQLToCSVOperator(BaseOperator):
         for column in df.select_dtypes([np.object]).columns[1:]:
             df[column] = df[column].str.replace(r"[\"\',]", '')
 
-        df.to_csv(path_or_buf=csv.name, sep = '|', index=False);
+        df.to_csv(path_or_buf=csv.name, sep = '~', index=False);
         return csv
 
 
