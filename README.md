@@ -49,7 +49,11 @@ The scripts is tested for only Python 2.7
 > Step 5: Initialize the airflow meta database
 >>  airflow initdb
 
-> Step 6: Copy mysql, s3, postgress section of airflow.cfg from the pseudo folder into the current one
+> Step 6: Copy mysql, s3, postgress section of airflow.cfg from the pseudo folder into the current one. Also copy the properties from the
+remote log connection for S3.
+>> remote_base_log_folder = scopeworkeretllogs
+>> remote_log_conn_id = s3_scopeworker
+
 
 > Step 7 : Copy the dags and plugin from the pseudo folder to Airflow_home:
 
