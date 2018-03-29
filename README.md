@@ -70,4 +70,3 @@ remote log connection for S3.
 >> `airflow scheduler -D`
 
 > Step 9 : Ensure Create Connection dag is run first
-
