@@ -13,8 +13,6 @@ class RedshiftErrorSensor(BaseSensorOperator):
 
         hook = PostgresHook(self.redshift_connection_id);
         connection = hook.get_conn();
-
-
         return True;
 
 

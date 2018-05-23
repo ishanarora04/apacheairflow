@@ -10,7 +10,7 @@ args = {
 }
 
 dag = DAG('redshift_vacuum_plugin', description='REDSHIFT VACUUM DAG',
-          schedule_interval='*/1 * * * *',
+          schedule_interval='0 5 * * *',
           start_date=datetime(2017, 3, 20),
           catchup=False,
           default_args=args)
@@ -18,7 +18,7 @@ dag = DAG('redshift_vacuum_plugin', description='REDSHIFT VACUUM DAG',
 
 redshift_operator = RedshiftVacuumOperator(task_id="vacumming_task",
                                         redshift_connection_id=configuration.get("postgresql", "postgresql_conn_id"),
-                                         query = "COMMIT;vacuum; COMMIT;",
+                                         query = "COMMIT;vacuum; ANALYZE; COMMIT;",
                                          dag=dag)
 
 dummy_operator = DummyOperator(task_id='dummy_task', retries=3, dag=dag)

@@ -1,2 +1,21 @@
-/Users/ishanarora/PycharmProjects/RedshiftSampleETL/env/lib/python2.7/site-packages/psycopg2/__init__.py:144: UserWarning: The psycopg2 wheel package will be renamed from release 2.8; in order to keep installing from binary please use "pip install psycopg2-binary" instead. For details see: <http://initd.org/psycopg/docs/install.html#binary-install-from-pypi>.
-  """)
+Traceback (most recent call last):
+  File "/Users/ishanarora/PycharmProjects/RedshiftSampleETL/env/bin/airflow", line 27, in <module>
+    args.func(args)
+  File "/Users/ishanarora/PycharmProjects/RedshiftSampleETL/env/lib/python2.7/site-packages/airflow/bin/cli.py", line 768, in webserver
+    with ctx:
+  File "/Users/ishanarora/PycharmProjects/RedshiftSampleETL/env/lTraceback (most recent call last):
+  File "/Users/ishanarora/PycharmProjects/RedshiftSampleETL/env/bin/airflow", line 27, in <module>
+    args.func(args)
+  File "/Users/ishanarora/PycharmProjects/RedshiftSampleETL/env/lib/python2.7/site-packages/airflow/bin/cli.py", line 783, in webserver
+    monitor_gunicorn(gunicorn_master_proc)
+  File "/Users/ishanarora/PycharmProjects/RedshiftSampleETL/env/lib/python2.7/site-packages/airflow/bin/cli.py", line 751, in monitor_gunicorn
+    restart_workers(gunicorn_master_proc, num_workers)
+  File "/Users/ishanarora/PycharmProjects/RedshiftSampleETL/env/lib/python2.7/site-packages/airflow/bin/cli.py", line 631, in restart_workers
+    num_ready_workers_running = get_num_ready_workers_running(gunicorn_master_proc)
+  File "/Users/ishanarora/PycharmProjects/RedshiftSampleETL/env/lib/python2.7/site-packages/airflow/bin/cli.py", line 609, in get_num_ready_workers_running
+    if settings.GUNICORN_WORKER_READY_PREFIX in proc.cmdline()[0]
+  File "/Users/ishanarora/PycharmProjects/RedshiftSampleETL/env/lib/python2.7/site-packages/psutil/__init__.py", line 621, in cmdline
+    return self._proc.cmdline()
+  File "/Users/ishanarora/PycharmProjects/RedshiftSampleETL/env/lib/python2.7/site-packages/psutil/_psosx.py", line 259, in wrapper
+    raise AccessDenied(self.pid, self._name)
+psutil.AccessDenied: psutil.AccessDenied (pid=42949)

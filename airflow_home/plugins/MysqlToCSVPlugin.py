@@ -13,6 +13,7 @@ from MySQLdb.constants import FIELD_TYPE
 from airflow.hooks.postgres_hook import PostgresHook
 import codecs
 
+
 log = logging.getLogger(__name__)
 
 class MySQLToCSVOperator(BaseOperator):
@@ -136,7 +137,7 @@ class MySQLToCSVOperator(BaseOperator):
         for column in df.select_dtypes([np.object]).columns[1:]:
             df[column] = df[column].str.replace(r"[\"\',]", '')
 
-        df.to_csv(path_or_buf=csv.name, sep = '~', index=False);
+        df.to_csv(path_or_buf=csv.name, sep = '|', index=False);
         return csv
 
 
@@ -144,14 +145,14 @@ class MySQLToCSVOperator(BaseOperator):
         """
             Cursor.description provides the metadata about the cursor
             Takes a cursor and iterates over it .
-            Prints the cursor data
+            Prints the cursor dat
         """
 
-        primary_key = cursor.description[cursor.lastrowid][0];
-        file_key = "m&{0}&{1}.csv".format(table_name, primary_key);
+        primary_key = cursor.description[cursor.lastrowid][0]
+        file_key = "m&{0}&{1}.csv".format(table_name, primary_key)
         file_handle = codecs.open(file_key, 'w' , errors='ignore', encoding='utf-8')
-        file_handle = self._create_csv_file(mysql_query="select * from " + table_name , csv = file_handle);
-        return {file_key : file_handle};
+        file_handle = self._create_csv_file(mysql_query="select * from " + table_name , csv = file_handle)
+        return {file_key : file_handle}
 
     def _write_local_file_schema(self, cursor):
         """
@@ -274,7 +275,7 @@ class MySQLToCSVOperator(BaseOperator):
                 FIELD_TYPE.TIMESTAMP: 'TIMESTAMP',
                 FIELD_TYPE.YEAR: 'INTEGER',
             }
-            return d[mysql_type] if mysql_type in d else 'VARCHAR(max)';
+            return d[mysql_type] if mysql_type in d else 'VARCHAR(20000)';
 
 
 

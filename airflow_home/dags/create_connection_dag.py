@@ -68,6 +68,18 @@ def auto_conn():
                      "login": "airflow",
                      "password": "airflow"})
 
+    create_new_conn(session, {
+        "conn_id": "mongo_connection",
+        "conn_type": "mongo",
+        "host": "13.126.117.239",
+        "port": "27017",
+        "login": "mongo",
+        "password": "password"
+    });
+
+
+
+
     session.close()
 
 dag = airflow.DAG(
