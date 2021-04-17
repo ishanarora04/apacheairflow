@@ -36,8 +36,13 @@ class MySQLToCSVOperator(BaseOperator):
         super(MySQLToCSVOperator, self).__init__(*args, **kwargs)
 
     def execute(self, context):
-        self.mysql_hook = MySqlHook(self.mysql_conn_id);
+
+
+        self.mysql_hook = MySqlHook(self.mysql_conn_id);  #DATA SOURCE =>
+
         self.mysql_metadata_hook = MySqlHook("airflow_connection");
+
+
         self.table_name = self.fetch_table_name();
 
         if self.table_name is None:
@@ -69,7 +74,7 @@ class MySQLToCSVOperator(BaseOperator):
                 if elem[0] in difference:
                     alter_fields.append(elem);
             redshift_alter_table_commands = self._alter_table(table_name, alter_fields);
-            self._redshift_staging_table(";".join(redshift_alter_table_commands));
+            self._redshift_staging_table(";".join(redshift_alter_table_commands));   #CREATE REDSHIFT STAGING TABLE
 
         self._upload_files(files_to_upload);
         cursor.close();
